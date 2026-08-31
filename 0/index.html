@@ -3,10 +3,20 @@
 <head>
     <title>Project 0 Images</title>
     <style>
+        /* CSS Variables */
+        :root {
+            --max-box-size: 750px;
+            --random-font: arial, sans-serif;
+        }
+
+        /* General Styles */
+
         body {
-            font-family: Arial, sans-serif;
+            /* font-family: Arial, sans-serif; */
             margin: 20px;
             background-color: rgb(43, 0, 255);
+            text-align: center;
+            place-items: center;
         }
 
         h1 {
@@ -18,37 +28,105 @@
         }
 
         img {
-            height: 200px
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
         }
 
-        .photobox {
-            align-self: center;
-            width: 80%;
+        .row {
             display: flex;
-            justify-content: space-evenly;
+            gap: 20px;
+        }
+
+        .photoarea {
+            /* background-color: rgb(206, 76, 44); */
+
+            width: 75%;
+            height: 75%;
+
+            max-width: var(--max-box-size);
+            max-height: var(--max-box-size);
+
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            object-fit: cover;
         }
 
         .photo {
-            align-self: center;
-            width: 80%;
-            display: flex;
-            justify-content: center;
+            flex: 1;
+        }
+
+        .phototext {
+            /* background-color: blueviolet; */
+
+            font-family: var(--random-font);
+            font-size: 2.5vw;
+            flex: 1;
+            color: rgb(219, 226, 17)
         }
 
     </style>
+
+    
+    <!-- // Source - https://stackoverflow.com/a/807895
+    // Posted by marcgg, modified by community. See post 'Timeline' for change history
+    // Retrieved 2026-08-28, License - CC BY-SA 4.0 -->
+
+    <!-- Font Randomizer -->
+    <script defer>
+        
+        const fonts = [
+        "Arial, sans-serif",
+        "Verdana, sans-serif",
+        "Helvetica, sans-serif",
+        "Tahoma, sans-serif",
+        "Trebuchet MS, sans-serif",
+        "Times New Roman, serif",
+        "Georgia, serif",
+        "Garamond, serif",
+        "Courier New, monospace",
+        "Brush Script MT, cursive"
+        ];
+
+        const randomFont = fonts[Math.floor(Math.random() * fonts.length)];
+        document.documentElement.style.setProperty('--random-font', randomFont);
+        
+    </script>
+
 </head>
 <body>
     <h1>Here are my beautiful headshots!</h1>
-    <div class="photobox">
-        <div>
-            <h2>This is my face in a beautiful close up headshot</h2>
-            <img src="./media/close_headshot.jpeg"/>    
+    <div class="photoarea">
+
+        <div class = "row"> 
+            <div class = "phototext">
+                This is my face in a beautiful close up headshot
+            </div>
+            <div class = "phototext">
+                This is my face in a beautiful normal shot headshot
+            </div>
         </div>
 
-        <div>
-            <h2>This is my face in a beautiful normal shot headshot</h2>
-            <img src="./media/normal_headshot.jpeg"/>
+        <div class = "row">
+            <div class = "photo">
+                <img src="./media/close_headshot.jpeg"/>
+            </div>
+
+            <div class = "photo">
+                <img src="./media/normal_headshot.jpeg"/>
+            </div>
         </div>
+        
+        <div class = "row">
+            <div class = "phototext">
+                ~20cm
+            </div>
+            <div class = "phototext">
+                ~80cm
+            </div>
+        </div>
+
     </div>
     
     
