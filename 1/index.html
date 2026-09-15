@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Project 1 Images</title>
+    <style>
+        /* CSS Variables */
+        :root {
+            --max-box-size: 750px;
+            --random-font: arial, sans-serif;
+        }
+
+        /* General Styles */
+
+        body {
+            /* font-family: Arial, sans-serif; */
+            margin: 20px;
+            background-color: rgb(43, 0, 255);
+            text-align: center;
+            place-items: center;
+        }
+
+        h1 {
+            color: rgb(255, 221, 0)
+        }
+
+        h2 {
+            color: rgb(219, 226, 17)
+        }
+
+        a {
+            color: rgb(219, 226, 17)
+        }
+
+        img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .photoarea {
+            /* background-color: rgb(206, 76, 44); */
+
+            width: 75%;
+            height: 75%;
+
+            max-width: var(--max-box-size);
+            max-height: var(--max-box-size);
+
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            object-fit: cover;
+        }
+
+        .photo {
+            flex: 1;
+        }
+
+        .phototext {
+            /* background-color: blueviolet; */
+
+            font-family: var(--random-font);
+            font-size: 2.5vw;
+            flex: 1;
+            color: rgb(219, 226, 17)
+        }
+
+    </style>
+
+</head>
+<body>
+    
+    <a href="../index.html">Home</a>
+
+    <h1>Here are my beautiful headshots!</h1>
+    <div class="photoarea">
+
+        <div class = "row"> 
+            <div class = "phototext">
+                This is my face in a beautiful close up headshot
+            </div>
+            <div class = "phototext">
+                This is my face in a beautiful normal shot headshot
+            </div>
+        </div>
+        
+        <div class = "row">
+            <div class = "phototext">
+                ~20cm
+            </div>
+            <div class = "phototext">
+                ~80cm
+            </div>
+        </div>
+
+        <div class = "row">
+
+            <div class = "phototext">
+                The second photo looks much better as a result of 
+                the camera being farther away. When the camera is 
+                close, it requires that the camera be viewing a much 
+                wider and distorted field of view than when a camera 
+                from farther away is zoomed in (where the distortion 
+                from perspective shift doesn't happen).
+            </div>
+
+        </div>
+
+    </div>
+
+    <h1>Here are interesting shots of Hilgard Hall!</h1>
+
+    <div class="photoarea">
+        <div class = "row">
+
+            <div class = "phototext">
+                This is with zoom
+            </div>
+
+            <div class = "phototext">
+                This is without zoom
+            </div>
+
+        </div>
+
+        <div class = "row">
+            <div class = "phototext">
+                ~50ft
+            </div>
+            <div class = "phototext">
+                ~15ft
+            </div>
+        </div>
+
+        <div class = "row">
+
+            <div class = "phototext">
+                The building looks a lot flatter from afar-zoomed-in 
+                as the prspective/grandure of the building is not clearly 
+                visible. When you are closer, you need a wider field of 
+                view to get the same shot as from farther away, meaning 
+                that the building will look far more interesting and have 
+                a greater depth than when it is photographed from afar.
+            </div>
+
+        </div>
+
+    </div>
+
+    <h1>"Here are is my Dolly Zoom! Inspired by Lord of the Rings</h1>
+    <div class="photoarea">
+
+        <div class = "row">
+
+            <div class = "phototext">
+                No explaination for this one needed, it's 
+                simply a cool shot with some perspective tricks going 
+                on.
+            </div>
+
+        </div>
+    </div>
+    
+    
+</body>
+</html>
