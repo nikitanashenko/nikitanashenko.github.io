@@ -184,11 +184,10 @@ names = ['cathedral.jpg', 'monastery.jpg', 'tobolsk.jpg',
          'church.tif', 'emir.tif', 'harvesters.tif', 'icon.tif',
          'ilemselga.tif', 'melons.tif', 'religous_painting.tif',
          'self_portrait.tif', 'siren.tif', 'three_generations.tif',
-         'wharf.tif']
+         'wharf.tif', 'Bashenka.tif', 'Kafedra.tif', 'V Malorossii_Lake.tif', 
+         'V Malorossii_Woman.tif']
 
-names_2 = ['Bashenka.tif', 
-           'Kafedra.tif',
-           'V Malorossii_Lake.tif', 'V Malorossii_Woman.tif']
+names_2 = []
 
 here = os.path.dirname(os.path.abspath(__file__))
 

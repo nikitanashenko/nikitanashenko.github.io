@@ -1,397 +1,396 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Project 1 Images</title>
+    <title>Project 1 — Colorizing the Prokudin-Gorskii Collection</title>
     <style>
         :root {
-            --max-box-size: 750px;
-            --random-font: arial, sans-serif;
+            --max-box-size: 850px;
+            --random-font: 'Segoe UI', Arial, sans-serif;
+            --bg: rgb(28, 20, 120);
+            --accent: rgb(255, 221, 0);
+            --text: rgb(230, 235, 120);
+            --card: rgba(0, 0, 0, 0.18);
         }
+        * { box-sizing: border-box; }
         body {
-            margin: 20px;
-            background-color: rgb(43, 0, 255);
+            margin: 0;
+            padding: 40px 20px;
+            background: linear-gradient(160deg, rgb(43, 0, 255), rgb(20, 10, 90));
+            background-attachment: fixed;
+            font-family: var(--random-font);
             text-align: center;
-            place-items: center;
+            color: var(--text);
         }
-        h1 { color: rgb(255, 221, 0) }
-        h2 { color: rgb(219, 226, 17) }
-        a { color: rgb(219, 226, 17) }
-        img {
-            height: 100%;
-            width: 100%;
-            object-fit: cover;
+        a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover { text-decoration: underline; }
+        h1 {
+            color: var(--accent);
+            font-size: 2.6rem;
+            margin: 20px 0 8px;
+            letter-spacing: 1px;
+        }
+        .subtitle {
+            color: var(--text);
+            font-size: 1rem;
+            margin-bottom: 40px;
+            opacity: 0.85;
+        }
+        .container {
+            max-width: var(--max-box-size);
+            margin: 0 auto;
+        }
+        .writeup {
+            text-align: left;
+            line-height: 1.7;
+            font-size: 1.05rem;
+            background: var(--card);
+            border: 1px solid rgba(255, 221, 0, 0.25);
+            border-radius: 14px;
+            padding: 28px 34px;
+            margin-bottom: 50px;
+        }
+        .writeup h2 {
+            color: var(--accent);
+            border-bottom: 2px solid rgba(255, 221, 0, 0.35);
+            padding-bottom: 6px;
+            margin-top: 28px;
+        }
+        .writeup h2:first-child { margin-top: 0; }
+        .writeup ol { padding-left: 22px; }
+        .writeup ol li { margin-bottom: 8px; }
+        .writeup p { margin: 14px 0; }
+
+        .card {
+            background: var(--card);
+            border: 1px solid rgba(255, 221, 0, 0.2);
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 34px;
+        }
+        .imgtitle {
+            color: var(--accent);
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .offset {
+            color: var(--text);
+            font-size: 1rem;
+            font-family: 'Consolas', monospace;
+            margin-bottom: 16px;
+            opacity: 0.9;
         }
         .row {
             display: flex;
-            gap: 20px;
+            gap: 18px;
         }
-        .photoarea {
-            width: 75%;
-            height: 75%;
-            max-width: var(--max-box-size);
-            max-height: var(--max-box-size);
+        .col {
+            flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            object-fit: cover;
         }
-        .photo { flex: 1; }
-        .phototext {
-            font-family: var(--random-font);
-            font-size: 2.5vw;
-            flex: 1;
-            color: rgb(219, 226, 17)
+        .caption {
+            color: var(--text);
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .offset {
-            font-family: var(--random-font);
-            font-size: 1.3vw;
-            flex: 1;
-            color: rgb(255, 221, 0)
-        }
-        hr {
-            border: none;
-            border-top: 3px solid rgb(255, 221, 0);
+        img {
             width: 100%;
-            margin: 30px 0;
+            border-radius: 8px;
+            display: block;
+        }
+        .sectionhead {
+            color: var(--accent);
+            font-size: 1.3rem;
+            line-height: 1.6;
+            text-align: left;
+            margin: 40px 0 30px;
+            padding: 20px 26px;
+            background: var(--card);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+        }
+        .failnote {
+            color: var(--text);
+            font-size: 1rem;
+            line-height: 1.6;
+            text-align: left;
+            margin-bottom: 16px;
+            opacity: 0.9;
         }
     </style>
 </head>
 <body>
+    <div class="container">
 
-    <a href="../index.html">Home</a>
+    <a href="../index.html">← Home</a>
 
-    <h1>Welcome To My Art Gallery!</h1>
-    <div class="photoarea">
+    <h1>Colorizing the Prokudin-Gorskii Collection</h1>
+    <div class="subtitle">CS180 — Project 1</div>
 
-        <div class="row">
-            <div class="phototext">
-                These would be our standard jpgs. Can't get enough of them
-            </div>
-        </div>
+    <div class="writeup">
+        <h2>How It Works</h2>
+        <p>
+            Each glass plate holds three single-channel exposures — blue, green, and red, going
+            top to bottom — which, when appropriately layered on top of one another, produce a
+            striking color image. Unfortunately, the plates are stored as intensity values (black
+            and white) and are presented as one vertically stacked, horizontally unaligned bunch.
+            As a result, we must first split the image into its three channels and then combine them
+            into RGB. We must also find a way to properly shift them so that they correctly overlap
+            and avoid producing artifacts in the final result.
+        </p>
 
-    <hr/>
+        <h2>Single-Scale Alignment</h2>
+        <p>
+            For smaller images, single-scale alignment is usually enough. This is when we
+            exhaustively shift one color channel over a reference channel (in our case, blue) and
+            calculate, based on some metric, which displacement is best. This is achieved by:
+        </p>
+        <ol>
+            <li>Selecting the channel and the reference channel.</li>
+            <li>Picking a dx and dy to shift the channel by.</li>
+            <li>Cropping both images to leave out wrapping defects on the outer edges, based on a given percentage.</li>
+            <li>Getting a score by comparing the shifted, cropped image against the reference using a specific metric (either L2 or NCC).</li>
+            <li>Updating the stored displacement if its score is better than the previously stored one.</li>
+            <li>Repeating across the full range of dx and dy values.</li>
+        </ol>
 
-    <div class="row">
-        <div class="phototext">Cathedral</div>
+        <h2>Scoring Metrics: L2 and NCC</h2>
+        <p>
+            There are two scoring metrics we can use, L2 and NCC.
+        </p>
+        <p>
+            <strong>L2</strong>, or the L2 norm, is a very simple scoring metric. It essentially
+            compares the difference between the two images in terms of pixel intensities. Here, a
+            lower score is better, since that means there is very little difference between the two
+            images and they are more likely to be properly aligned. This also means we should
+            initialize our score to infinity (completely different) and only update it when we find
+            a lower score (a closer match). However, this metric struggles when comparing the red
+            and blue channels, because there is inherently a large difference between them — making
+            it much easier for the algorithm to get lost in the noise and misalign the image.
+        </p>
+        <p>
+            <strong>NCC</strong>, or Normalized Cross-Correlation, is a bit more sophisticated. It
+            first standardizes each image by subtracting the channel's mean value from every pixel
+            in that channel. It then divides these new values by their norm. Finally, it multiplies
+            the two modified channels together and sums the result. Here, a higher score means the
+            images are closer. NCC does a far better job of aligning the blue and red channels
+            because it accounts for the mean and normalizes the values before comparing them. This
+            makes NCC far more attractive as a scoring metric than the simplistic L2 norm.
+        </p>
+
+        <h2>The Image Pyramid</h2>
+        <p>
+            For larger files, such as the .tif images, a different approach is necessary — let me
+            introduce the image pyramid. The image pyramid is a very useful tool for scanning large
+            images through selective sampling and blurring, without losing accuracy. It works like
+            this:
+        </p>
+        <ol>
+            <li>We begin by applying a Gaussian blur to both the channel and the reference, then sample only every even row and column, discarding the rest. This quickly shrinks the image while preserving its essence through the blur.</li>
+            <li>We repeat this until we reach the base case, where the image's dimensions are smaller than 100px by 100px.</li>
+            <li>We then apply the standard single-scale alignment algorithm, since the image is now small enough to scan through many displacements cheaply.</li>
+            <li>Once we have this displacement, we multiply it by two (to account for the downsampling factor) and pass it to the next level up as the origin of its search — this time only skimming a small range of displacements around that estimate.</li>
+            <li>We continue this process back up to the top layer, refining and passing the displacement higher, until we obtain our final displacement.</li>
+        </ol>
+
+        <h2>Results</h2>
+        <p>
+            The results of these calculations for each image can be found below, where you will find
+            the (dx, dy) values that the red and green channels were shifted by to achieve the
+            final, aligned image.
+        </p>
+
+        <h2>The One Failure: Emir</h2>
+        <p>
+            The one case where this process failed was Emir — the final boss. NCC on raw pixel
+            values fails here because the Emir's brightly colored robe registers very differently
+            across the red and blue channels. The red search acquires a false match at a coarser
+            pyramid level, and that error propagates up the rest of the pyramid. This is the known
+            hard case the assignment mentions; gradient or edge features would be needed to fix it.
+        </p>
     </div>
-    <div class="row">
+
+    <div class="sectionhead">
+        These are our standard JPEGs. Can't get enough of them.
+    </div>
+
+    <div class="card">
+        <div class="imgtitle">Cathedral</div>
         <div class="offset">G: (2, 5)&nbsp;&nbsp;&nbsp;R: (3, 12)</div>
-    </div>
-    <div class="row">
-        <div class="phototext">Unaligned</div>
-        <div class="phototext">Aligned</div>
-    </div>
-    <div class="row">
-        <div class="photo"><img src="./media_processor/output/out_unaligned_cathedral.jpg"/></div>
-        <div class="photo"><img src="./media_processor/output/out_aligned_cathedral.jpg"/></div>
+        <div class="row">
+            <div class="col"><div class="caption">Unaligned</div><img src="./media_processor/output/out_unaligned_cathedral.jpg"/></div>
+            <div class="col"><div class="caption">Aligned</div><img src="./media_processor/output/out_aligned_cathedral.jpg"/></div>
+        </div>
     </div>
 
-    <hr/>
-
-    <div class="row">
-        <div class="phototext">Monastery</div>
-    </div>
-    <div class="row">
+    <div class="card">
+        <div class="imgtitle">Monastery</div>
         <div class="offset">G: (2, -3)&nbsp;&nbsp;&nbsp;R: (2, 3)</div>
-    </div>
-    <div class="row">
-        <div class="phototext">Unaligned</div>
-        <div class="phototext">Aligned</div>
-    </div>
-    <div class="row">
-        <div class="photo"><img src="./media_processor/output/out_unaligned_monastery.jpg"/></div>
-        <div class="photo"><img src="./media_processor/output/out_aligned_monastery.jpg"/></div>
+        <div class="row">
+            <div class="col"><div class="caption">Unaligned</div><img src="./media_processor/output/out_unaligned_monastery.jpg"/></div>
+            <div class="col"><div class="caption">Aligned</div><img src="./media_processor/output/out_aligned_monastery.jpg"/></div>
+        </div>
     </div>
 
-    <hr/>
-
-    <div class="row">
-        <div class="phototext">Tobolsk</div>
-    </div>
-    <div class="row">
+    <div class="card">
+        <div class="imgtitle">Tobolsk</div>
         <div class="offset">G: (3, 3)&nbsp;&nbsp;&nbsp;R: (3, 6)</div>
-    </div>
-    <div class="row">
-        <div class="phototext">Unaligned</div>
-        <div class="phototext">Aligned</div>
-    </div>
-    <div class="row">
-        <div class="photo"><img src="./media_processor/output/out_unaligned_tobolsk.jpg"/></div>
-        <div class="photo"><img src="./media_processor/output/out_aligned_tobolsk.jpg"/></div>
+        <div class="row">
+            <div class="col"><div class="caption">Unaligned</div><img src="./media_processor/output/out_unaligned_tobolsk.jpg"/></div>
+            <div class="col"><div class="caption">Aligned</div><img src="./media_processor/output/out_aligned_tobolsk.jpg"/></div>
+        </div>
     </div>
 
-    <hr/>
-
-    <div class="row">
-        <div class="phototext">Church</div>
-    </div>
-    <div class="row">
+    <div class="card">
+        <div class="imgtitle">Church</div>
         <div class="offset">G: (4, 25)&nbsp;&nbsp;&nbsp;R: (-4, 58)</div>
-    </div>
-    <div class="row">
-        <div class="phototext">Unaligned</div>
-        <div class="phototext">Aligned</div>
-    </div>
-    <div class="row">
-        <div class="photo"><img src="./media_processor/output/out_unaligned_church.jpg"/></div>
-        <div class="photo"><img src="./media_processor/output/out_aligned_church.jpg"/></div>
+        <div class="row">
+            <div class="col"><div class="caption">Unaligned</div><img src="./media_processor/output/out_unaligned_church.jpg"/></div>
+            <div class="col"><div class="caption">Aligned</div><img src="./media_processor/output/out_aligned_church.jpg"/></div>
+        </div>
     </div>
 
-    <hr/>
-
-    <div class="row">
-        <div class="phototext">Emir</div>
-    </div>
-    <div class="row">
+    <div class="card">
+        <div class="imgtitle">Emir</div>
         <div class="offset">G: (24, 49)&nbsp;&nbsp;&nbsp;R: (-482, 400)</div>
-    </div>
-    <div class="row">
-        <div class="phototext" style="font-size: 1.3vw;">
-            This is my one failed alignment. NCC on raw pixel values fails here
-            due to Emir's brightly colored robe registering very differently
-            across the red and blue channels. The red search acquires a false
-            match at a coarser pyramid level and it's error propogates up the
-            rest of the pyramid. This is the known hard case the assignment mentions;
-            gradient/edge features would be needed to fix it.
+        <div class="failnote">
+            This is the final boss — my one failed alignment. See the writeup above for why the
+            red channel misaligns on this plate.
+        </div>
+        <div class="row">
+            <div class="col"><div class="caption">Unaligned</div><img src="./media_processor/output/out_unaligned_emir.jpg"/></div>
+            <div class="col"><div class="caption">Aligned</div><img src="./media_processor/output/out_aligned_emir.jpg"/></div>
         </div>
     </div>
-    <div class="row">
-        <div class="phototext">Unaligned</div>
-        <div class="phototext">Aligned</div>
-    </div>
-    <div class="row">
-        <div class="photo"><img src="./media_processor/output/out_unaligned_emir.jpg"/></div>
-        <div class="photo"><img src="./media_processor/output/out_aligned_emir.jpg"/></div>
-    </div>
 
-    <hr/>
-
-    <div class="row">
-        <div class="phototext">Harvesters</div>
-    </div>
-    <div class="row">
+    <div class="card">
+        <div class="imgtitle">Harvesters</div>
         <div class="offset">G: (17, 60)&nbsp;&nbsp;&nbsp;R: (14, 124)</div>
-    </div>
-    <div class="row">
-        <div class="phototext">Unaligned</div>
-        <div class="phototext">Aligned</div>
-    </div>
-    <div class="row">
-        <div class="photo"><img src="./media_processor/output/out_unaligned_harvesters.jpg"/></div>
-        <div class="photo"><img src="./media_processor/output/out_aligned_harvesters.jpg"/></div>
-    </div>
-
-    <hr/>
-
-    <div class="row">
-        <div class="phototext">Icon</div>
-    </div>
-    <div class="row">
-        <div class="offset">G: (17, 41)&nbsp;&nbsp;&nbsp;R: (23, 89)</div>
-    </div>
-    <div class="row">
-        <div class="phototext">Unaligned</div>
-        <div class="phototext">Aligned</div>
-    </div>
-    <div class="row">
-        <div class="photo"><img src="./media_processor/output/out_unaligned_icon.jpg"/></div>
-        <div class="photo"><img src="./media_processor/output/out_aligned_icon.jpg"/></div>
-    </div>
-
-    <hr/>
-
-    <div class="row">
-        <div class="phototext">Ilemselga</div>
-    </div>
-    <div class="row">
-        <div class="offset">G: (7, 40)&nbsp;&nbsp;&nbsp;R: (11, 130)</div>
-    </div>
-    <div class="row">
-        <div class="phototext">Unaligned</div>
-        <div class="phototext">Aligned</div>
-    </div>
-    <div class="row">
-        <div class="photo"><img src="./media_processor/output/out_unaligned_ilemselga.jpg"/></div>
-        <div class="photo"><img src="./media_processor/output/out_aligned_ilemselga.jpg"/></div>
-    </div>
-
-    <hr/>
-
-    <div class="row">
-        <div class="phototext">Melons</div>
-    </div>
-    <div class="row">
-        <div class="offset">G: (10, 81)&nbsp;&nbsp;&nbsp;R: (14, 178)</div>
-    </div>
-    <div class="row">
-        <div class="phototext">Unaligned</div>
-        <div class="phototext">Aligned</div>
-    </div>
-    <div class="row">
-        <div class="photo"><img src="./media_processor/output/out_unaligned_melons.jpg"/></div>
-        <div class="photo"><img src="./media_processor/output/out_aligned_melons.jpg"/></div>
-    </div>
-
-    <hr/>
-
-    <div class="row">
-        <div class="phototext">Religious Painting</div>
-    </div>
-    <div class="row">
-        <div class="offset">G: (3, 28)&nbsp;&nbsp;&nbsp;R: (7, 68)</div>
-    </div>
-    <div class="row">
-        <div class="phototext">Unaligned</div>
-        <div class="phototext">Aligned</div>
-    </div>
-    <div class="row">
-        <div class="photo"><img src="./media_processor/output/out_unaligned_religous_painting.jpg"/></div>
-        <div class="photo"><img src="./media_processor/output/out_aligned_religous_painting.jpg"/></div>
-    </div>
-
-    <hr/>
-
-    <div class="row">
-        <div class="phototext">Self Portrait</div>
-    </div>
-    <div class="row">
-        <div class="offset">G: (29, 79)&nbsp;&nbsp;&nbsp;R: (37, 176)</div>
-    </div>
-    <div class="row">
-        <div class="phototext">Unaligned</div>
-        <div class="phototext">Aligned</div>
-    </div>
-    <div class="row">
-        <div class="photo"><img src="./media_processor/output/out_unaligned_self_portrait.jpg"/></div>
-        <div class="photo"><img src="./media_processor/output/out_aligned_self_portrait.jpg"/></div>
-    </div>
-
-    <hr/>
-
-    <div class="row">
-        <div class="phototext">Siren</div>
-    </div>
-    <div class="row">
-        <div class="offset">G: (-6, 49)&nbsp;&nbsp;&nbsp;R: (-25, 96)</div>
-    </div>
-    <div class="row">
-        <div class="phototext">Unaligned</div>
-        <div class="phototext">Aligned</div>
-    </div>
-    <div class="row">
-        <div class="photo"><img src="./media_processor/output/out_unaligned_siren.jpg"/></div>
-        <div class="photo"><img src="./media_processor/output/out_aligned_siren.jpg"/></div>
-    </div>
-
-    <hr/>
-
-    <div class="row">
-        <div class="phototext">Three Generations</div>
-    </div>
-    <div class="row">
-        <div class="offset">G: (14, 52)&nbsp;&nbsp;&nbsp;R: (11, 111)</div>
-    </div>
-    <div class="row">
-        <div class="phototext">Unaligned</div>
-        <div class="phototext">Aligned</div>
-    </div>
-    <div class="row">
-        <div class="photo"><img src="./media_processor/output/out_unaligned_three_generations.jpg"/></div>
-        <div class="photo"><img src="./media_processor/output/out_aligned_three_generations.jpg"/></div>
-    </div>
-
-    <hr/>
-
-    <div class="row">
-        <div class="phototext">Wharf</div>
-    </div>
-    <div class="row">
-        <div class="offset">G: (-7, 15)&nbsp;&nbsp;&nbsp;R: (-16, 82)</div>
-    </div>
-    <div class="row">
-        <div class="phototext">Unaligned</div>
-        <div class="phototext">Aligned</div>
-    </div>
-    <div class="row">
-        <div class="photo"><img src="./media_processor/output/out_unaligned_wharf.jpg"/></div>
-        <div class="photo"><img src="./media_processor/output/out_aligned_wharf.jpg"/></div>
-    </div>
-
-    <hr/>
-
-    <div class="row">
-        <div class="phototext">Now, here are some images I personally selected,
-            2 of which are from Ukraine and 2 of which are from Belarus, an homage
-            to my father who's from Ukraine and my mom who's from Belarus.
+        <div class="row">
+            <div class="col"><div class="caption">Unaligned</div><img src="./media_processor/output/out_unaligned_harvesters.jpg"/></div>
+            <div class="col"><div class="caption">Aligned</div><img src="./media_processor/output/out_aligned_harvesters.jpg"/></div>
         </div>
     </div>
 
-    <hr/>
-
-    <div class="row">
-        <div class="phototext">Bashenka</div>
+    <div class="card">
+        <div class="imgtitle">Icon</div>
+        <div class="offset">G: (17, 41)&nbsp;&nbsp;&nbsp;R: (23, 89)</div>
+        <div class="row">
+            <div class="col"><div class="caption">Unaligned</div><img src="./media_processor/output/out_unaligned_icon.jpg"/></div>
+            <div class="col"><div class="caption">Aligned</div><img src="./media_processor/output/out_aligned_icon.jpg"/></div>
+        </div>
     </div>
-    <div class="row">
+
+    <div class="card">
+        <div class="imgtitle">Ilemselga</div>
+        <div class="offset">G: (7, 40)&nbsp;&nbsp;&nbsp;R: (11, 130)</div>
+        <div class="row">
+            <div class="col"><div class="caption">Unaligned</div><img src="./media_processor/output/out_unaligned_ilemselga.jpg"/></div>
+            <div class="col"><div class="caption">Aligned</div><img src="./media_processor/output/out_aligned_ilemselga.jpg"/></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="imgtitle">Melons</div>
+        <div class="offset">G: (10, 81)&nbsp;&nbsp;&nbsp;R: (14, 178)</div>
+        <div class="row">
+            <div class="col"><div class="caption">Unaligned</div><img src="./media_processor/output/out_unaligned_melons.jpg"/></div>
+            <div class="col"><div class="caption">Aligned</div><img src="./media_processor/output/out_aligned_melons.jpg"/></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="imgtitle">Religious Painting</div>
+        <div class="offset">G: (3, 28)&nbsp;&nbsp;&nbsp;R: (7, 68)</div>
+        <div class="row">
+            <div class="col"><div class="caption">Unaligned</div><img src="./media_processor/output/out_unaligned_religous_painting.jpg"/></div>
+            <div class="col"><div class="caption">Aligned</div><img src="./media_processor/output/out_aligned_religous_painting.jpg"/></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="imgtitle">Self Portrait</div>
+        <div class="offset">G: (29, 79)&nbsp;&nbsp;&nbsp;R: (37, 176)</div>
+        <div class="row">
+            <div class="col"><div class="caption">Unaligned</div><img src="./media_processor/output/out_unaligned_self_portrait.jpg"/></div>
+            <div class="col"><div class="caption">Aligned</div><img src="./media_processor/output/out_aligned_self_portrait.jpg"/></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="imgtitle">Siren</div>
+        <div class="offset">G: (-6, 49)&nbsp;&nbsp;&nbsp;R: (-25, 96)</div>
+        <div class="row">
+            <div class="col"><div class="caption">Unaligned</div><img src="./media_processor/output/out_unaligned_siren.jpg"/></div>
+            <div class="col"><div class="caption">Aligned</div><img src="./media_processor/output/out_aligned_siren.jpg"/></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="imgtitle">Three Generations</div>
+        <div class="offset">G: (14, 52)&nbsp;&nbsp;&nbsp;R: (11, 111)</div>
+        <div class="row">
+            <div class="col"><div class="caption">Unaligned</div><img src="./media_processor/output/out_unaligned_three_generations.jpg"/></div>
+            <div class="col"><div class="caption">Aligned</div><img src="./media_processor/output/out_aligned_three_generations.jpg"/></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="imgtitle">Wharf</div>
+        <div class="offset">G: (-7, 15)&nbsp;&nbsp;&nbsp;R: (-16, 82)</div>
+        <div class="row">
+            <div class="col"><div class="caption">Unaligned</div><img src="./media_processor/output/out_unaligned_wharf.jpg"/></div>
+            <div class="col"><div class="caption">Aligned</div><img src="./media_processor/output/out_aligned_wharf.jpg"/></div>
+        </div>
+    </div>
+
+    <div class="sectionhead">
+        Now, here are some images I personally selected — two from Ukraine and two from Belarus —
+        an homage to my father, who's from Ukraine, and my mother, who's from Belarus.
+    </div>
+
+    <div class="card">
+        <div class="imgtitle">Bashenka</div>
         <div class="offset">G: (-5, 41)&nbsp;&nbsp;&nbsp;R: (-7, 109)</div>
-    </div>
-    <div class="row">
-        <div class="phototext">Unaligned</div>
-        <div class="phototext">Aligned</div>
-    </div>
-    <div class="row">
-        <div class="photo"><img src="./media_processor/output/out_unaligned_Bashenka.jpg"/></div>
-        <div class="photo"><img src="./media_processor/output/out_aligned_Bashenka.jpg"/></div>
+        <div class="row">
+            <div class="col"><div class="caption">Unaligned</div><img src="./media_processor/output/out_unaligned_Bashenka.jpg"/></div>
+            <div class="col"><div class="caption">Aligned</div><img src="./media_processor/output/out_aligned_Bashenka.jpg"/></div>
+        </div>
     </div>
 
-    <hr/>
-
-    <div class="row">
-        <div class="phototext">Kafedra</div>
-    </div>
-    <div class="row">
+    <div class="card">
+        <div class="imgtitle">Kafedra</div>
         <div class="offset">G: (2, 62)&nbsp;&nbsp;&nbsp;R: (-4, 134)</div>
-    </div>
-    <div class="row">
-        <div class="phototext">Unaligned</div>
-        <div class="phototext">Aligned</div>
-    </div>
-    <div class="row">
-        <div class="photo"><img src="./media_processor/output/out_unaligned_Kafedra.jpg"/></div>
-        <div class="photo"><img src="./media_processor/output/out_aligned_Kafedra.jpg"/></div>
+        <div class="row">
+            <div class="col"><div class="caption">Unaligned</div><img src="./media_processor/output/out_unaligned_Kafedra.jpg"/></div>
+            <div class="col"><div class="caption">Aligned</div><img src="./media_processor/output/out_aligned_Kafedra.jpg"/></div>
+        </div>
     </div>
 
-    <hr/>
-
-    <div class="row">
-        <div class="phototext">V Malorossii Lake</div>
-    </div>
-    <div class="row">
+    <div class="card">
+        <div class="imgtitle">V Malorossii — Lake</div>
         <div class="offset">G: (9, -22)&nbsp;&nbsp;&nbsp;R: (11, -34)</div>
-    </div>
-    <div class="row">
-        <div class="phototext">Unaligned</div>
-        <div class="phototext">Aligned</div>
-    </div>
-    <div class="row">
-        <div class="photo"><img src="./media_processor/output/out_unaligned_V Malorossii_Lake.jpg"/></div>
-        <div class="photo"><img src="./media_processor/output/out_aligned_V Malorossii_Lake.jpg"/></div>
+        <div class="row">
+            <div class="col"><div class="caption">Unaligned</div><img src="./media_processor/output/out_unaligned_V Malorossii_Lake.jpg"/></div>
+            <div class="col"><div class="caption">Aligned</div><img src="./media_processor/output/out_aligned_V Malorossii_Lake.jpg"/></div>
+        </div>
     </div>
 
-    <hr/>
-
-    <div class="row">
-        <div class="phototext">V Malorossii Woman</div>
-    </div>
-    <div class="row">
+    <div class="card">
+        <div class="imgtitle">V Malorossii — Woman</div>
         <div class="offset">G: (3, 26)&nbsp;&nbsp;&nbsp;R: (4, 120)</div>
-    </div>
-    <div class="row">
-        <div class="phototext">Unaligned</div>
-        <div class="phototext">Aligned</div>
-    </div>
-    <div class="row">
-        <div class="photo"><img src="./media_processor/output/out_unaligned_V Malorossii_Woman.jpg"/></div>
-        <div class="photo"><img src="./media_processor/output/out_aligned_V Malorossii_Woman.jpg"/></div>
+        <div class="row">
+            <div class="col"><div class="caption">Unaligned</div><img src="./media_processor/output/out_unaligned_V Malorossii_Woman.jpg"/></div>
+            <div class="col"><div class="caption">Aligned</div><img src="./media_processor/output/out_aligned_V Malorossii_Woman.jpg"/></div>
+        </div>
     </div>
 
     </div>
