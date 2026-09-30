@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+*.pyc
+*/submission/
+*.zip
+out_fname.jpg
