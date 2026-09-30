@@ -111,15 +111,16 @@
     <!-- ---------- 1.1 ---------- -->
     <div class="writeup">
         <h2>1.1 — Convolutions from Scratch</h2>
-        <p class="todo">WRITE: What a convolution is (flip the kernel, slide it, multiply and sum). How your
-            4-loop version works vs. your 2-loop version. How you handle padding (zero padding, "same" size).</p>
+        <p>The 4-loop version works by cycling through each pixel in the original image, and then for each pixel,
+            applying the (flipped) kernel using that pixel as the center. The kernel is applied one entry at a time.
+            The 2-loop version similarly goes through each pixel in the original image, but at each pixel it applies
+            the whole kernel at once using matrix operations. Both zero-pad the image so the output is the same size
+            as the input.</p>
 
-        <pre>
-# PASTE: convolve_4_loop here
-        </pre>
-        <pre>
-# PASTE: convolve_2_loop here
-        </pre>
+        <p><strong>4 loops:</strong></p>
+        <img src="media/convolve_4_loop.png"/>
+        <p><strong>2 loops:</strong></p>
+        <img src="media/convolve_2_loop.png"/>
 
         <p><strong>Runtime comparison</strong> (128×128 image, 9×9 box filter):</p>
         <table>
@@ -128,9 +129,10 @@
             <tr><td>2 loops</td><td>108.09 ms</td></tr>
             <tr><td>scipy.signal.convolve2d</td><td>2.85 ms</td></tr>
         </table>
-        <p class="todo">WRITE: Why each is faster (Python loop overhead vs. vectorized numpy vs. compiled C).
-            Boundary handling: both zero-pad; scipy also supports 'wrap'/'symm'. Zero padding darkens the
-            edges of the box blur. Both versions matched scipy (np.allclose = True).</p>
+        <p>The 2-loop version is faster because numpy does the per-pixel multiply-and-sum in compiled code instead of
+            Python loops; scipy is fastest because the entire convolution runs in C. Both of my versions matched scipy
+            (np.allclose = True). For boundaries, all three use zero padding here (scipy also supports wrap and
+            symmetric padding), which slightly darkens the edges of the box-blurred image.</p>
     </div>
 
     <div class="card">
@@ -148,10 +150,11 @@
     <!-- ---------- 1.2 ---------- -->
     <div class="writeup">
         <h2>1.2 — Finite Difference Operator</h2>
-        <p class="todo">WRITE: Dx / Dy show horizontal/vertical intensity changes. Gradient magnitude =
-            sqrt(dx² + dy²). Binarizing with a threshold. Justify t = 0.30: below ~0.25 the grass noise
-            remains, above ~0.35 real edges (coat, tripod, skyline) break apart. Mention the thin bright
-            border from zero padding.</p>
+        <p>Dx and Dy show intensity changes in the horizontal and vertical directions. The gradient magnitude is
+            sqrt(Dx² + Dy²), which I binarized with a threshold. I chose t = 0.30 because the noise was reasonably
+            suppressed while still leaving good edges: lower thresholds kept a lot of grass noise, and higher ones
+            started breaking up real edges like the coat, tripod, and skyline. The thin bright border comes from
+            zero padding.</p>
     </div>
 
     <div class="card">
@@ -177,11 +180,12 @@
     <!-- ---------- 1.3 ---------- -->
     <div class="writeup">
         <h2>1.3 — Derivative of Gaussian (DoG)</h2>
-        <p class="todo">WRITE: Built G with cv2.getGaussianKernel (ksize, sigma) and an outer product.
-            Two ways: (A) blur then Dx/Dy, (B) convolve G with Dx/Dy once to get DoG filters, apply once.
-            Differences vs 1.2: much less grass noise, smoother/thicker edges, lower threshold needed (0.10)
-            because smoothing lowers gradient magnitudes. Verification: interior matches exactly
-            (convolution is associative); only the border differs because of zero padding.</p>
+        <p>I built the Gaussian G with cv2.getGaussianKernel (7×7, σ = 1) and an outer product. First I blurred the
+            image and then applied Dx and Dy; then I convolved G with Dx and Dy to get DoG filters and applied them in
+            a single convolution. Compared with 1.2, the results have much less grass noise and smoother, thicker
+            edges. The best threshold dropped to 0.10 because smoothing lowers the gradient magnitudes. The two
+            methods match exactly in the interior (np.allclose = True), since convolution is associative; they differ
+            only at the border because of zero padding.</p>
     </div>
 
     <div class="card">
@@ -218,9 +222,10 @@
     <!-- ---------- 2.1 ---------- -->
     <div class="writeup">
         <h2>2.1 — Image "Sharpening"</h2>
-        <p class="todo">WRITE: Gaussian = low-pass. image − blur = high frequencies. Sharpened =
-            image + α·(image − blur). As one kernel: (1+α)·δ − α·G (the unsharp mask filter), which matches
-            the 3-step result. Effect of α: higher α = crisper, then halos/noise.</p>
+        <p>The Gaussian blur keeps only low frequencies, so image − blur gives the high frequencies, and the sharpened
+            image is image + α·(image − blur). Unsharp masking combines the blur and sharpen steps into one convolution
+            with the kernel (1+α)·δ − α·G, which gives the same result. Higher α looks crisper but eventually adds
+            halos and noise.</p>
     </div>
 
     <div class="card">
@@ -249,17 +254,19 @@
     <div class="card">
         <div class="imgtitle">Evaluation: Blur, Then Re-sharpen</div>
         <img src="media/p2_1_blur_sharpened_cup.png"/>
-        <p class="todo">WRITE: Edges look crisp again, but fine detail removed by the blur doesn't come
-            back — sharpening only amplifies frequencies that still exist. Halos at high-contrast edges.</p>
+        <p>Blurring and then re-sharpening makes the image a lot flatter: the blur removes the high frequencies, and
+            the sharpening can't retrieve them, since it only amplifies frequencies that are still there. Edges look
+            crisper, but fine detail doesn't come back.</p>
     </div>
 
     <!-- ---------- 2.2 ---------- -->
     <div class="writeup">
         <h2>2.2 — Hybrid Images</h2>
-        <p class="todo">WRITE: Low-pass one image (Gaussian, σ_low), high-pass the other (image − blur,
-            σ_high), add. Up close high frequencies dominate; far away only low frequencies are visible.
-            Cutoffs used for each pair and why. Alignment: two clicked points; the faint diagonal lines are
-            the rotated image border kept by the high-pass filter.</p>
+        <p>Hybrids work by overlaying the high frequencies of one image onto the low frequencies of another. At long
+            distances you see the low-frequency image, while up close the high frequencies dominate and you see the
+            high-frequency image. The sigmas set the size of each smoothing kernel, which chooses the cutoff
+            frequencies. The images are aligned using two clicked points; the faint diagonal lines are the rotated
+            image border, which the high-pass filter keeps.</p>
     </div>
 
     <div class="card">
@@ -270,8 +277,9 @@
         <div class="caption">Hybrid (σ_high = 4, σ_low = 8)</div>
         <img src="media/p2_2_derek_nutmeg_fft.png"/>
         <div class="caption">Log-magnitude FFTs: inputs, high-pass, low-pass, hybrid</div>
-        <p class="todo">WRITE: Low-pass FFT = bright center only. High-pass = energy spread outward.
-            Hybrid = both. Diagonal lines in the FFT come from the rotated border edges.</p>
+        <p>The FFTs match the predicted pattern: the low-pass image keeps only a bright center (low frequencies),
+            the high-pass image has energy spread outward, and the hybrid mixes the two. The diagonal lines in the
+            FFTs come from the rotated border edges.</p>
     </div>
 
     <div class="card">
@@ -291,24 +299,26 @@
     <!-- ---------- 2.3 ---------- -->
     <div class="writeup">
         <h2>2.3 — Gaussian and Laplacian Stacks</h2>
-        <p class="todo">WRITE: Gaussian stack = repeatedly blur, no downsampling. Laplacian stack =
-            G[i] − G[i+1] (one frequency band each) plus the last Gaussian level; it sums back to the
-            original exactly (verified). Levels and σ used.</p>
+        <p>The Gaussian stack repeatedly blurs the image with a Gaussian without downsampling, so every level is the
+            same size. The Laplacian stack takes the difference between neighboring Gaussian levels, G[i] − G[i+1],
+            so each level holds one band of frequencies, with the last Gaussian level appended at the end. Summing the
+            Laplacian stack gives back the original image exactly (verified with np.allclose).</p>
     </div>
 
     <div class="card">
         <div class="imgtitle">Figure 3.42 Recreation</div>
         <img src="media/p2_3_fig.png"/>
-        <p class="todo">WRITE caption: rows = Laplacian levels 0, 2, 4, then the sum over all levels.
-            Columns = masked apple, masked orange, blend. Level 4 is the residual low-pass.</p>
+        <p>Rows: Laplacian levels 0, 2, and 4, then the sum over all levels. Columns: masked apple, masked orange,
+            and their blend. Fine levels switch sharply at the seam, while coarse levels cross-fade over a wide band.</p>
     </div>
 
     <!-- ---------- 2.4 ---------- -->
     <div class="writeup">
         <h2>2.4 — Multiresolution Blending</h2>
-        <p class="todo">WRITE: Blend each Laplacian level with the matching level of the mask's Gaussian
-            stack, then sum. Fine bands get a sharp transition (no ghosting), coarse bands a wide one
-            (no visible seam).</p>
+        <p>Each image is split into a Laplacian stack, and the mask into a Gaussian stack. At each level, the two
+            Laplacian levels are combined with mask·L1 + (1 − mask)·L2, and all the levels are summed. Because the mask
+            is blurred more at coarser levels, fine details get a sharp transition (no ghosting) while broad colors
+            blend over a wide region (no visible seam).</p>
     </div>
 
     <div class="card">
@@ -335,7 +345,8 @@
     <!-- ===================================================== -->
     <div class="writeup">
         <h2>What I Learned</h2>
-        <p class="todo">WRITE: The most important thing you learned from this project (required).</p>
+        <p>I learned how filters and frequencies can alter images through non-traditional editing means: separating
+            an image into frequency bands makes sharpening, hybrid images, and seamless blending possible.</p>
     </div>
 
 </div>
