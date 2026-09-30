@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Project 2 — Fun with Filters and Frequencies</title>
+    <style>
+        :root {
+            --max-box-size: 950px;
+            --random-font: 'Segoe UI', Arial, sans-serif;
+            --accent: rgb(255, 221, 0);
+            --text: rgb(230, 235, 120);
+            --card: rgba(0, 0, 0, 0.18);
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            background: linear-gradient(160deg, rgb(43, 0, 255), rgb(20, 10, 90));
+            background-attachment: fixed;
+            font-family: var(--random-font);
+            text-align: center;
+            color: var(--text);
+        }
+        a { color: var(--accent); text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; }
+        h1 { color: var(--accent); font-size: 2.6rem; margin: 20px 0 8px; letter-spacing: 1px; }
+        .subtitle { font-size: 1rem; margin-bottom: 40px; opacity: 0.85; }
+        .container { max-width: var(--max-box-size); margin: 0 auto; }
+
+        .partheader {
+            color: var(--accent);
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 60px 0 20px;
+            letter-spacing: 1px;
+        }
+        .writeup {
+            text-align: left;
+            line-height: 1.7;
+            font-size: 1.05rem;
+            background: var(--card);
+            border: 1px solid rgba(255, 221, 0, 0.25);
+            border-radius: 14px;
+            padding: 28px 34px;
+            margin-bottom: 30px;
+        }
+        .writeup h2 {
+            color: var(--accent);
+            border-bottom: 2px solid rgba(255, 221, 0, 0.35);
+            padding-bottom: 6px;
+            margin-top: 0;
+        }
+        .writeup p { margin: 14px 0; }
+        .todo {
+            background: rgba(255, 80, 80, 0.18);
+            border-left: 4px solid rgb(255, 110, 110);
+            padding: 8px 14px;
+            border-radius: 6px;
+            color: rgb(255, 200, 200);
+            font-style: italic;
+        }
+        pre {
+            text-align: left;
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            color: rgb(220, 230, 255);
+        }
+        table {
+            margin: 10px auto;
+            border-collapse: collapse;
+            font-family: 'Consolas', monospace;
+        }
+        td, th { border: 1px solid rgba(255, 221, 0, 0.35); padding: 6px 16px; }
+        th { color: var(--accent); }
+
+        .card {
+            background: var(--card);
+            border: 1px solid rgba(255, 221, 0, 0.2);
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 34px;
+        }
+        .imgtitle { color: var(--accent); font-size: 1.5rem; font-weight: bold; margin-bottom: 12px; }
+        .row { display: flex; gap: 18px; }
+        .col { flex: 1; display: flex; flex-direction: column; }
+        .caption {
+            font-size: 0.9rem;
+            margin: 8px 0;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        img { width: 100%; border-radius: 8px; display: block; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <a href="../index.html">← Home</a>
+
+    <h1>Fun with Filters and Frequencies</h1>
+    <div class="subtitle">CS180 — Project 2</div>
+
+    <!-- ===================================================== -->
+    <div class="partheader">Part 1: Fun with Filters</div>
+    <!-- ===================================================== -->
+
+    <!-- ---------- 1.1 ---------- -->
+    <div class="writeup">
+        <h2>1.1 — Convolutions from Scratch</h2>
+        <p class="todo">WRITE: What a convolution is (flip the kernel, slide it, multiply and sum). How your
+            4-loop version works vs. your 2-loop version. How you handle padding (zero padding, "same" size).</p>
+
+        <pre>
+# PASTE: convolve_4_loop here
+        </pre>
+        <pre>
+# PASTE: convolve_2_loop here
+        </pre>
+
+        <p><strong>Runtime comparison</strong> (128×128 image, 9×9 box filter):</p>
+        <table>
+            <tr><th>Method</th><th>Time</th></tr>
+            <tr><td>4 loops</td><td>932.01 ms</td></tr>
+            <tr><td>2 loops</td><td>108.09 ms</td></tr>
+            <tr><td>scipy.signal.convolve2d</td><td>2.85 ms</td></tr>
+        </table>
+        <p class="todo">WRITE: Why each is faster (Python loop overhead vs. vectorized numpy vs. compiled C).
+            Boundary handling: both zero-pad; scipy also supports 'wrap'/'symm'. Zero padding darkens the
+            edges of the box blur. Both versions matched scipy (np.allclose = True).</p>
+    </div>
+
+    <div class="card">
+        <div class="imgtitle">Selfie: 9×9 Box Filter</div>
+        <img src="media/p1_1_box.png"/>
+    </div>
+    <div class="card">
+        <div class="imgtitle">Selfie: Dx and Dy</div>
+        <div class="row">
+            <div class="col"><img src="media/p1_1_dx.png"/><div class="caption">Dx</div></div>
+            <div class="col"><img src="media/p1_1_dy.png"/><div class="caption">Dy</div></div>
+        </div>
+    </div>
+
+    <!-- ---------- 1.2 ---------- -->
+    <div class="writeup">
+        <h2>1.2 — Finite Difference Operator</h2>
+        <p class="todo">WRITE: Dx / Dy show horizontal/vertical intensity changes. Gradient magnitude =
+            sqrt(dx² + dy²). Binarizing with a threshold. Justify t = 0.30: below ~0.25 the grass noise
+            remains, above ~0.35 real edges (coat, tripod, skyline) break apart. Mention the thin bright
+            border from zero padding.</p>
+    </div>
+
+    <div class="card">
+        <div class="imgtitle">Partial Derivatives</div>
+        <div class="row">
+            <div class="col"><img src="media/p1_2_dx.png"/><div class="caption">Dx</div></div>
+            <div class="col"><img src="media/p1_2_dy.png"/><div class="caption">Dy</div></div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="imgtitle">Gradient Magnitude</div>
+        <img src="media/p1_2_mag.png"/>
+    </div>
+    <div class="card">
+        <div class="imgtitle">Threshold Sweep</div>
+        <img src="media/p1_2_threshold_grid.png"/>
+    </div>
+    <div class="card">
+        <div class="imgtitle">Final Edge Image (t = 0.30)</div>
+        <img src="media/p1_2_threshold_030.png"/>
+    </div>
+
+    <!-- ---------- 1.3 ---------- -->
+    <div class="writeup">
+        <h2>1.3 — Derivative of Gaussian (DoG)</h2>
+        <p class="todo">WRITE: Built G with cv2.getGaussianKernel (ksize, sigma) and an outer product.
+            Two ways: (A) blur then Dx/Dy, (B) convolve G with Dx/Dy once to get DoG filters, apply once.
+            Differences vs 1.2: much less grass noise, smoother/thicker edges, lower threshold needed (0.10)
+            because smoothing lowers gradient magnitudes. Verification: interior matches exactly
+            (convolution is associative); only the border differs because of zero padding.</p>
+    </div>
+
+    <div class="card">
+        <div class="imgtitle">Gaussian Blur</div>
+        <img src="media/p1_3_blur.png"/>
+    </div>
+    <div class="card">
+        <div class="imgtitle">DoG Filters</div>
+        <img src="media/p1_3_DoG_filters.png"/>
+    </div>
+    <div class="card">
+        <div class="imgtitle">Blur-then-Derive vs. DoG (should match)</div>
+        <img src="media/p1_3_blur_vs_DoG_dx.png"/>
+        <div class="caption">Dx</div>
+        <img src="media/p1_3_blur_vs_DoG_dy.png"/>
+        <div class="caption">Dy</div>
+        <img src="media/p1_3_blur_vs_DoG_mag.png"/>
+        <div class="caption">Magnitude</div>
+    </div>
+    <div class="card">
+        <div class="imgtitle">Threshold Sweep</div>
+        <img src="media/p1_3_gaussian_9_thresholds.png"/>
+        <img src="media/p1_3_gaussian_6_thresholds.png" style="margin-top:14px"/>
+    </div>
+    <div class="card">
+        <div class="imgtitle">Final Edge Image (t = 0.10)</div>
+        <img src="media/p1_3_gaussian_threshold_010.png"/>
+    </div>
+
+    <!-- ===================================================== -->
+    <div class="partheader">Part 2: Fun with Frequencies</div>
+    <!-- ===================================================== -->
+
+    <!-- ---------- 2.1 ---------- -->
+    <div class="writeup">
+        <h2>2.1 — Image "Sharpening"</h2>
+        <p class="todo">WRITE: Gaussian = low-pass. image − blur = high frequencies. Sharpened =
+            image + α·(image − blur). As one kernel: (1+α)·δ − α·G (the unsharp mask filter), which matches
+            the 3-step result. Effect of α: higher α = crisper, then halos/noise.</p>
+    </div>
+
+    <div class="card">
+        <div class="imgtitle">Taj Mahal</div>
+        <div class="row">
+            <div class="col"><img src="media/p2_1_blurred_taj.png"/><div class="caption">Blurred</div></div>
+            <div class="col"><img src="media/p2_1_highfreq_taj.png"/><div class="caption">High Frequencies</div></div>
+        </div>
+        <div class="row">
+            <div class="col"><img src="media/p2_1_sharpened_taj.png"/><div class="caption">Sharpened (α = 1)</div></div>
+            <div class="col"><img src="media/p2_1_extra_sharp_taj.png"/><div class="caption">Sharpened (α = 2)</div></div>
+        </div>
+        <img src="media/p2_1_unsharp_taj.png" style="margin-top:14px"/>
+        <div class="caption">3-step vs. single unsharp-mask convolution</div>
+    </div>
+
+    <div class="card">
+        <div class="imgtitle">Stanley Cup</div>
+        <div class="row">
+            <div class="col"><img src="media/p2_1_blurred_cup.png"/><div class="caption">Blurred</div></div>
+            <div class="col"><img src="media/p2_1_highfreq_cup.png"/><div class="caption">High Frequencies</div></div>
+            <div class="col"><img src="media/p2_1_sharpened_cup.png"/><div class="caption">Sharpened</div></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="imgtitle">Evaluation: Blur, Then Re-sharpen</div>
+        <img src="media/p2_1_blur_sharpened_cup.png"/>
+        <p class="todo">WRITE: Edges look crisp again, but fine detail removed by the blur doesn't come
+            back — sharpening only amplifies frequencies that still exist. Halos at high-contrast edges.</p>
+    </div>
+
+    <!-- ---------- 2.2 ---------- -->
+    <div class="writeup">
+        <h2>2.2 — Hybrid Images</h2>
+        <p class="todo">WRITE: Low-pass one image (Gaussian, σ_low), high-pass the other (image − blur,
+            σ_high), add. Up close high frequencies dominate; far away only low frequencies are visible.
+            Cutoffs used for each pair and why. Alignment: two clicked points; the faint diagonal lines are
+            the rotated image border kept by the high-pass filter.</p>
+    </div>
+
+    <div class="card">
+        <div class="imgtitle">Derek + Nutmeg (full process)</div>
+        <img src="media/p2_2_derek_nutmeg_aligned.png"/>
+        <div class="caption">Aligned inputs</div>
+        <img src="media/p2_2_derek_nutmeg_hybrid.png" style="max-width:450px;margin:0 auto"/>
+        <div class="caption">Hybrid (σ_high = 4, σ_low = 8)</div>
+        <img src="media/p2_2_derek_nutmeg_fft.png"/>
+        <div class="caption">Log-magnitude FFTs: inputs, high-pass, low-pass, hybrid</div>
+        <p class="todo">WRITE: Low-pass FFT = bright center only. High-pass = energy spread outward.
+            Hybrid = both. Diagonal lines in the FFT come from the rotated border edges.</p>
+    </div>
+
+    <div class="card">
+        <div class="imgtitle">Roommate + Grumpy Cat</div>
+        <img src="media/p2_2_roommate_grumpy_cat_aligned.png"/>
+        <img src="media/p2_2_roommate_grumpy_cat_hybrid.png" style="max-width:450px;margin:14px auto 0"/>
+        <div class="caption">Hybrid (σ_high = 4, σ_low = 23)</div>
+    </div>
+
+    <div class="card">
+        <div class="imgtitle">Trump + Clown</div>
+        <img src="media/p2_2_trump_clown_aligned.png"/>
+        <img src="media/p2_2_trump_clown_hybrid.png" style="max-width:450px;margin:14px auto 0"/>
+        <div class="caption">Hybrid (σ_high = 5, σ_low = 5)</div>
+    </div>
+
+    <!-- ---------- 2.3 ---------- -->
+    <div class="writeup">
+        <h2>2.3 — Gaussian and Laplacian Stacks</h2>
+        <p class="todo">WRITE: Gaussian stack = repeatedly blur, no downsampling. Laplacian stack =
+            G[i] − G[i+1] (one frequency band each) plus the last Gaussian level; it sums back to the
+            original exactly (verified). Levels and σ used.</p>
+    </div>
+
+    <div class="card">
+        <div class="imgtitle">Figure 3.42 Recreation</div>
+        <img src="media/p2_3_fig.png"/>
+        <p class="todo">WRITE caption: rows = Laplacian levels 0, 2, 4, then the sum over all levels.
+            Columns = masked apple, masked orange, blend. Level 4 is the residual low-pass.</p>
+    </div>
+
+    <!-- ---------- 2.4 ---------- -->
+    <div class="writeup">
+        <h2>2.4 — Multiresolution Blending</h2>
+        <p class="todo">WRITE: Blend each Laplacian level with the matching level of the mask's Gaussian
+            stack, then sum. Fine bands get a sharp transition (no ghosting), coarse bands a wide one
+            (no visible seam).</p>
+    </div>
+
+    <div class="card">
+        <div class="imgtitle">The Oraple</div>
+        <img src="media/p2_4_orange_apple_inputs.png"/>
+        <img src="media/p2_4_orange_apple_result.png" style="max-width:500px;margin:14px auto 0"/>
+        <div class="caption">6 levels, σ = 10, vertical step mask</div>
+    </div>
+
+    <div class="card">
+        <div class="imgtitle">Custom Blend 1: Puffirby</div>
+        <img src="media/p2_4_puffirby_inputs.png"/>
+        <img src="media/p2_4_puffirby_result.png" style="max-width:500px;margin:14px auto 0"/>
+        <div class="caption">4 levels, σ = 5, vertical step mask</div>
+    </div>
+
+    <div class="card">
+        <div class="imgtitle">Custom Blend 2: San Francisco + Los Angeles</div>
+        <img src="media/p2_4_safl_inputs.png"/>
+        <img src="media/p2_4_safl_result.png" style="max-width:500px;margin:14px auto 0"/>
+        <div class="caption">4 levels, σ = 5, circular mask</div>
+    </div>
+
+    <!-- ===================================================== -->
+    <div class="writeup">
+        <h2>What I Learned</h2>
+        <p class="todo">WRITE: The most important thing you learned from this project (required).</p>
+    </div>
+
+</div>
+</body>
+</html>
