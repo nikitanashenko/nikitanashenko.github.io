@@ -4,3 +4,12 @@ __pycache__/
 */submission/
 *.zip
 out_fname.jpg
+venv/
+data/
+results/
+.cache/
+.ipynb_checkpoints/
+
+3/code/partb/raw/
+colab_setup.py
+*.ipynb_checkpoints/
