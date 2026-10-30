@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Project 4 — (Auto)stitching and Photo Mosaics</title>
+    <style>
+        :root {
+            --max-box-size: 950px;
+            --random-font: 'Segoe UI', Arial, sans-serif;
+            --accent: rgb(255, 221, 0);
+            --text: rgb(230, 235, 120);
+            --card: rgba(0, 0, 0, 0.18);
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            background: linear-gradient(160deg, rgb(43, 0, 255), rgb(20, 10, 90));
+            background-attachment: fixed;
+            font-family: var(--random-font);
+            text-align: center;
+            color: var(--text);
+        }
+        a { color: var(--accent); text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; }
+        h1 { color: var(--accent); font-size: 2.6rem; margin: 20px 0 8px; letter-spacing: 1px; }
+        .subtitle { font-size: 1rem; margin-bottom: 40px; opacity: 0.85; }
+        .container { max-width: var(--max-box-size); margin: 0 auto; }
+
+        .partheader {
+            color: var(--accent);
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 60px 0 20px;
+            letter-spacing: 1px;
+        }
+        .writeup {
+            text-align: left;
+            line-height: 1.7;
+            font-size: 1.05rem;
+            background: var(--card);
+            border: 1px solid rgba(255, 221, 0, 0.25);
+            border-radius: 14px;
+            padding: 28px 34px;
+            margin-bottom: 30px;
+        }
+        .writeup h2 {
+            color: var(--accent);
+            border-bottom: 2px solid rgba(255, 221, 0, 0.35);
+            padding-bottom: 6px;
+            margin-top: 0;
+        }
+        .writeup p { margin: 14px 0; }
+        .todo {
+            background: rgba(255, 80, 80, 0.18);
+            border-left: 4px solid rgb(255, 110, 110);
+            padding: 8px 14px;
+            border-radius: 6px;
+            color: rgb(255, 200, 200);
+            font-style: italic;
+        }
+        pre {
+            text-align: left;
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            color: rgb(220, 230, 255);
+        }
+        table {
+            margin: 10px auto;
+            border-collapse: collapse;
+            font-family: 'Consolas', monospace;
+        }
+        td, th { border: 1px solid rgba(255, 221, 0, 0.35); padding: 6px 16px; }
+        th { color: var(--accent); }
+
+        .card {
+            background: var(--card);
+            border: 1px solid rgba(255, 221, 0, 0.2);
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 34px;
+        }
+        .imgtitle { color: var(--accent); font-size: 1.5rem; font-weight: bold; margin-bottom: 12px; }
+        .row { display: flex; gap: 18px; }
+        .col { flex: 1; display: flex; flex-direction: column; }
+        .caption {
+            font-size: 0.9rem;
+            margin: 8px 0;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        img { width: 100%; border-radius: 8px; display: block; }
+        .row.wrap { flex-wrap: wrap; }
+        .row.wrap .col { flex: 1 1 30%; }
+        .htable { margin: 6px auto 0; font-size: 0.78rem; }
+        .htable td { padding: 3px 8px; }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <a href="../index.html">← Home</a>
+
+    <h1>(Auto)stitching and Photo Mosaics</h1>
+    <div class="subtitle">CS180 — Project 4</div>
+
+
+    <!-- ===================== A.1 ===================== -->
+    <div class="partheader">A.1: Shoot the Pictures</div>
+
+
+        <div class="card">
+            <div class="imgtitle">Set 1: Street (Red Car)</div>
+            <div class="row">
+                <div class="col"><img src="media/red_car_l.jpeg" loading="lazy"><div class="caption">Left</div></div><div class="col"><img src="media/red_car_r.jpeg" loading="lazy"><div class="caption">Right</div></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="imgtitle">Set 2: Street (Trees)</div>
+            <div class="row">
+                <div class="col"><img src="media/tree_1.jpeg" loading="lazy"><div class="caption">Left</div></div><div class="col"><img src="media/tree_2.jpeg" loading="lazy"><div class="caption">Middle</div></div><div class="col"><img src="media/tree_3.jpeg" loading="lazy"><div class="caption">Right</div></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="imgtitle">Set 3: Kitchen</div>
+            <div class="row">
+                <div class="col"><img src="media/kitchen_1.jpeg" loading="lazy"><div class="caption">1</div></div><div class="col"><img src="media/kitchen_2.jpeg" loading="lazy"><div class="caption">2</div></div><div class="col"><img src="media/kitchen_3.jpeg" loading="lazy"><div class="caption">3</div></div><div class="col"><img src="media/kitchen_4.jpeg" loading="lazy"><div class="caption">4</div></div><div class="col"><img src="media/kitchen_5.jpeg" loading="lazy"><div class="caption">5</div></div>
+            </div>
+        </div>
+
+    <!-- ===================== A.2 ===================== -->
+    <div class="partheader">A.2: Recover Homographies</div>
+
+    <div class="writeup">
+        <h2>Setting Up the System</h2>
+        <p>A homography maps a point (x, y) in one image to (x′, y′) in another:</p>
+<pre>
+[w·x′]   [a  b  c] [x]
+[w·y′] = [d  e  f] [y]
+[ w  ]   [g  h  1] [1]
+
+x′ = (ax + by + c) / (gx + hy + 1)
+y′ = (dx + ey + f) / (gx + hy + 1)
+</pre>
+        <p>Multiplying through by the denominator makes each equation linear in the 8 unknowns. Every correspondence gives two rows:</p>
+<pre>
+[ x  y  1  0  0  0  −x·x′  −y·x′ ]   [a]     [x′]
+[ 0  0  0  x  y  1  −x·y′  −y·y′ ] · [b]  =  [y′]
+                                     [⋮]
+                                     [h]
+</pre>
+    </div>
+
+        <div class="card">
+            <div class="imgtitle">Red Car</div>
+            <div class="row" style="margin-bottom:18px">
+                <div class="col">
+                    <img src="media/correspondences_set1.jpg" loading="lazy">
+                    <div class="caption">Left → Right</div>
+                    <table class="htable"><tr><td>2.197468</td><td>-0.038074</td><td>-1273.175172</td></tr> <tr><td>0.478986</td><td>1.804473</td><td>-475.454447</td></tr> <tr><td>0.000850</td><td>-0.000002</td><td>1.000000</td></tr></table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="imgtitle">Trees</div>
+            <div class="row" style="margin-bottom:18px">
+                <div class="col">
+                    <img src="media/correspondences_tree_12.jpg" loading="lazy">
+                    <div class="caption">1 → 2</div>
+                    <table class="htable"><tr><td>1.51846</td><td>-0.00639</td><td>-539.31728</td></tr><tr><td>0.20236</td><td>1.30258</td><td>-150.77658</td></tr><tr><td>0.00037</td><td>-0.00002</td><td>1</td></tr></table>
+                </div>
+                <div class="col">
+                    <img src="media/correspondences_tree_32.jpg" loading="lazy">
+                    <div class="caption">3 → 2</div>
+                    <table class="htable"><tr><td>0.71259</td><td>-0.01895</td><td>337.08984</td></tr><tr><td>-0.09610</td><td>0.87632</td><td>66.70502</td></tr><tr><td>-0.00019</td><td>-0.00001</td><td>1</td></tr></table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="imgtitle">Kitchen</div>
+            <div class="row" style="margin-bottom:18px">
+                <div class="col">
+                    <img src="media/correspondences_kitchen_13.jpg" loading="lazy">
+                    <div class="caption">1 → 3</div>
+                    <table class="htable"><tr><td>1.87208</td><td>-0.03682</td><td>-940.02209</td></tr><tr><td>0.34865</td><td>1.54202</td><td>-322.51235</td></tr><tr><td>0.00061</td><td>-0.00003</td><td>1</td></tr></table>
+                </div>
+                <div class="col">
+                    <img src="media/correspondences_kitchen_23.jpg" loading="lazy">
+                    <div class="caption">2 → 3</div>
+                    <table class="htable"><tr><td>1.35234</td><td>-0.02669</td><td>-425.99796</td></tr><tr><td>0.14883</td><td>1.19240</td><td>-117.64714</td></tr><tr><td>0.00026</td><td>-0.00002</td><td>1</td></tr></table>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom:18px">
+                <div class="col">
+                    <img src="media/correspondences_kitchen_43.jpg" loading="lazy">
+                    <div class="caption">4 → 3</div>
+                    <table class="htable"><tr><td>0.64538</td><td>-0.00506</td><td>375.58435</td></tr><tr><td>-0.13322</td><td>0.85236</td><td>83.01469</td></tr><tr><td>-0.00024</td><td>-0.00001</td><td>1</td></tr></table>
+                </div>
+                <div class="col">
+                    <img src="media/correspondences_kitchen_53.jpg" loading="lazy">
+                    <div class="caption">5 → 3</div>
+                    <table class="htable"><tr><td>0.36792</td><td>0.00385</td><td>706.87715</td></tr><tr><td>-0.24445</td><td>0.81901</td><td>109.32596</td></tr><tr><td>-0.00043</td><td>0</td><td>1</td></tr></table>
+                </div>
+            </div>
+        </div>
+
+    <!-- ===================== A.3 ===================== -->
+    <div class="partheader">A.3: Warp the Images</div>
+
+
+    <div class="partheader" style="font-size:1.6rem">Rectification</div>
+
+        <div class="card">
+            <div class="imgtitle">Door</div>
+            <div class="row">
+                <div class="col"><img src="media/door.jpeg" loading="lazy"><div class="caption">Original</div></div><div class="col"><img src="media/door_nn.jpg" loading="lazy"><div class="caption">Nearest Neighbor</div></div><div class="col"><img src="media/door_bl.jpg" loading="lazy"><div class="caption">Bilinear</div></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="imgtitle">PC Side Panel</div>
+            <div class="row">
+                <div class="col"><img src="media/pc.jpeg" loading="lazy"><div class="caption">Original</div></div><div class="col"><img src="media/pc_nn.jpg" loading="lazy"><div class="caption">Nearest Neighbor</div></div><div class="col"><img src="media/pc_bl.jpg" loading="lazy"><div class="caption">Bilinear</div></div>
+            </div>
+        </div>
+
+    <div class="writeup">
+        <h2>Speed vs. Quality</h2>
+        <table>
+            <tr><th>Image</th><th>Nearest Neighbor</th><th>Bilinear</th></tr>
+            <tr><td>Door</td><td>0.017 s</td><td>0.043 s</td></tr>
+            <tr><td>PC</td><td>0.042 s</td><td>0.096 s</td></tr>
+        </table>
+        <p>In terms of speed, bilinear is around 4x slower than nearest neighbor. However, it makes up for this by improving image quality, as it significantly reduces aliasing due to the way it samples its surrounding pixels, rather than sampling the closest pixel in the reference as nearest neighbor does.</p>
+    </div>
+
+    <!-- ===================== A.4 ===================== -->
+    <div class="partheader">A.4: Blend the Images into a Mosaic</div>
+
+        <div class="card">
+            <div class="imgtitle">Mosaics</div>
+            <div class="caption">Red Car (2 images)</div>
+            <img src="media/car_mosaic_hard.jpg" loading="lazy">
+            <div class="caption" style="margin-top:22px">Trees (3 images)</div>
+            <img src="media/tree_mosaic_hard.jpg" loading="lazy">
+            <div class="caption" style="margin-top:22px">Kitchen (5 images)</div>
+            <img src="media/kitchen_mosaic_hard.jpg" loading="lazy">
+        </div>
+
+    <div class="writeup">
+        <h2>Procedure</h2>
+        <p>I used a one-shot approach, using the middle image as the reference when there was an odd number of images, and arbitrarily picking the right image when there were two. For all warps, I used bilinear warping, as it gave the best-quality images, which would be important during alignment and weighted averaging. I then combined all the images in one canvas that would fit all of them, adding up their respective colors and dividing them by the weighted alpha mask, or how many pixels combined to make that pixel. This did a relatively good job of stitching, but some artifacts, such as blurring, parallax, and visible edges, are still visible.</p>
+    </div>
+
+</div>
+
+</body>
+</html>
