@@ -7,14 +7,18 @@
         :root {
             --max-box-size: 750px;
             --random-font: arial, sans-serif;
+            --random-color: rgb(75, 16, 12);
+
+        
         }
 
         /* General Styles */
 
         body {
-            /* font-family: Arial, sans-serif; */
+            font-family: var(--random-font);
             margin: 20px;
-            background-color: rgb(43, 0, 255);
+            background-color: rgb(75, 16, 12);
+            color: var(--random-color);
             text-align: center;
             place-items: center;
         }
@@ -59,22 +63,14 @@
 
         .phototext {
             /* background-color: blueviolet; */
-
-            font-family: var(--random-font);
             font-size: 2.5vw;
             flex: 1;
-            color: rgb(219, 226, 17)
         }
 
     </style>
 
-    
-    <!-- // Source - https://stackoverflow.com/a/807895
-    // Posted by marcgg, modified by community. See post 'Timeline' for change history
-    // Retrieved 2026-08-28, License - CC BY-SA 4.0 -->
-
     <!-- Font Randomizer -->
-    <script defer>
+    <script>
         
         const fonts = [
         "Arial, sans-serif",
@@ -92,6 +88,12 @@
         const randomFont = fonts[Math.floor(Math.random() * fonts.length)];
         document.documentElement.style.setProperty('--random-font', randomFont);
         
+    </script>
+
+    <!-- Color Randomizer -->
+    <script>
+        const randomColor = `rgb(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)})`;
+        document.documentElement.style.setProperty('--random-color', randomColor);
     </script>
 
 </head>
