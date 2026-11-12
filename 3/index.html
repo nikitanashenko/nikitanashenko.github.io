@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Project 3 — Fun with Flow Matching</title>
+    <style>
+        :root {
+            --max-box-size: 950px;
+            --random-font: 'Segoe UI', Arial, sans-serif;
+            --accent: rgb(255, 221, 0);
+            --text: rgb(230, 235, 120);
+            --card: rgba(0, 0, 0, 0.18);
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            background: linear-gradient(160deg, rgb(43, 0, 255), rgb(20, 10, 90));
+            background-attachment: fixed;
+            font-family: var(--random-font);
+            text-align: center;
+            color: var(--text);
+        }
+        a { color: var(--accent); text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; }
+        h1 { color: var(--accent); font-size: 2.6rem; margin: 20px 0 8px; letter-spacing: 1px; }
+        .subtitle { font-size: 1rem; margin-bottom: 40px; opacity: 0.85; }
+        .container { max-width: var(--max-box-size); margin: 0 auto; }
+
+        .partheader {
+            color: var(--accent);
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 60px 0 20px;
+            letter-spacing: 1px;
+        }
+        .writeup {
+            text-align: left;
+            line-height: 1.7;
+            font-size: 1.05rem;
+            background: var(--card);
+            border: 1px solid rgba(255, 221, 0, 0.25);
+            border-radius: 14px;
+            padding: 28px 34px;
+            margin-bottom: 30px;
+        }
+        .writeup h2 {
+            color: var(--accent);
+            border-bottom: 2px solid rgba(255, 221, 0, 0.35);
+            padding-bottom: 6px;
+            margin-top: 0;
+        }
+        .writeup p { margin: 14px 0; }
+        .todo {
+            background: rgba(255, 80, 80, 0.18);
+            border-left: 4px solid rgb(255, 110, 110);
+            padding: 8px 14px;
+            border-radius: 6px;
+            color: rgb(255, 200, 200);
+            font-style: italic;
+        }
+        pre {
+            text-align: left;
+            background: rgba(0, 0, 0, 0.35);
+            border-radius: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            color: rgb(220, 230, 255);
+        }
+        table {
+            margin: 10px auto;
+            border-collapse: collapse;
+            font-family: 'Consolas', monospace;
+        }
+        td, th { border: 1px solid rgba(255, 221, 0, 0.35); padding: 6px 16px; }
+        th { color: var(--accent); }
+
+        .card {
+            background: var(--card);
+            border: 1px solid rgba(255, 221, 0, 0.2);
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 34px;
+        }
+        .imgtitle { color: var(--accent); font-size: 1.5rem; font-weight: bold; margin-bottom: 12px; }
+        .row { display: flex; gap: 18px; }
+        .col { flex: 1; display: flex; flex-direction: column; }
+        .caption {
+            font-size: 0.9rem;
+            margin: 8px 0;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        img { width: 100%; border-radius: 8px; display: block; }
+        .sectiontitle {
+            color: var(--accent);
+            text-align: left;
+            font-size: 1.6rem;
+            border-bottom: 2px solid rgba(255, 221, 0, 0.35);
+            padding-bottom: 6px;
+            margin: 44px 0 18px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <a href="../index.html">← Home</a>
+
+    <h1>Fun with Flow Matching</h1>
+    <div class="subtitle">CS180 — Project 3</div>
+
+    <!-- ===================================================== -->
+    <div class="partheader">Part A: Exploring the Power of Flow Models</div>
+    <!-- ===================================================== -->
+
+    <!-- ---------- 1.1 ---------- -->
+    <h2 class="sectiontitle">1.1 — Constructing Noisy Training Inputs</h2>
+    <div class="card">
+        <div class="imgtitle">Forward Process</div>
+        <img src="media/parta/training_inputs.png"/>
+        <div class="caption">Original, t = 0.25, t = 0.50, t = 0.75</div>
+    </div>
+
+    <!-- ---------- 1.2 ---------- -->
+    <h2 class="sectiontitle">1.2 — Classical Denoising</h2>
+    <div class="card">
+        <div class="imgtitle">Gaussian Blur Denoising</div>
+        <img src="media/parta/blur_0.25.png"/><div class="caption">t = 0.25</div>
+        <img src="media/parta/blur_0.5.png"/><div class="caption">t = 0.50</div>
+        <img src="media/parta/blur_0.75.png"/><div class="caption">t = 0.75</div>
+    </div>
+
+    <!-- ---------- 1.3 ---------- -->
+    <h2 class="sectiontitle">1.3 — One-Step Denoising</h2>
+    <div class="card">
+        <div class="imgtitle">One-Step Estimates</div>
+        <img src="media/parta/one_step_0.25.png"/><div class="caption">t = 0.25</div>
+        <img src="media/parta/one_step_0.5.png"/><div class="caption">t = 0.50</div>
+        <img src="media/parta/one_step_0.75.png"/><div class="caption">t = 0.75</div>
+    </div>
+
+    <!-- ---------- 1.4 ---------- -->
+    <h2 class="sectiontitle">1.4 — Visualizing Velocity</h2>
+    <div class="card">
+        <div class="imgtitle">Original</div>
+        <img src="media/parta/velocity_original.png" style="max-width:400px;margin:0 auto"/>
+    </div>
+    <div class="card">
+        <div class="imgtitle">Noisy Input · Predicted Update · Ground Truth · Error</div>
+        <img src="media/parta/velocity_0.25.png"/><div class="caption">t = 0.25</div>
+        <img src="media/parta/velocity_0.50.png"/><div class="caption">t = 0.50</div>
+        <img src="media/parta/velocity_0.75.png"/><div class="caption">t = 0.75</div>
+    </div>
+
+    <!-- ---------- 1.5 ---------- -->
+    <h2 class="sectiontitle">1.5 — Iterative Denoising with Euler Sampling</h2>
+    <div class="card">
+        <div class="imgtitle">Euler Denoising Trajectory</div>
+        <img src="media/parta/trajectory.png"/>
+        <div class="caption">Starting at t = 0.50, every fifth update</div>
+    </div>
+    <div class="card">
+        <div class="imgtitle">Denoising Methods Compared</div>
+        <img src="media/parta/comparison.png"/>
+        <div class="caption">Original · Gaussian blur · one-step · Euler</div>
+    </div>
+
+    <!-- ---------- 1.6 ---------- -->
+    <h2 class="sectiontitle">1.6 — Generating Images from Noise</h2>
+    <div class="card">
+        <div class="imgtitle">Conditional Samples — "a high quality photo"</div>
+        <img src="media/parta/conditional_samples.png"/>
+        <div class="caption">Seeds 180–184, no guidance</div>
+    </div>
+
+    <!-- ---------- 2.1 ---------- -->
+    <h2 class="sectiontitle">2.1 — Classifier-Free Guidance</h2>
+    <div class="card">
+        <div class="imgtitle">CFG Samples — "a high quality photo"</div>
+        <img src="media/parta/cfg_samples.png"/>
+        <div class="caption">Seeds 180–184, w = 7</div>
+    </div>
+
+    <!-- ---------- 3.1 ---------- -->
+    <h2 class="sectiontitle">3.1 — Image-to-Image Editing</h2>
+    <div class="card">
+        <div class="imgtitle">Campanile</div>
+        <img src="media/parta/edit_campanile.png"/>
+        <div class="caption">Original, then t = 0.02, 0.04, 0.06, 0.10, 0.14, 0.25, 0.50</div>
+    </div>
+    <div class="card">
+        <div class="imgtitle">My Image 1</div>
+        <img src="media/parta/edit_my_image_1.png"/>
+    </div>
+    <div class="card">
+        <div class="imgtitle">My Image 2</div>
+        <img src="media/parta/edit_my_image_2.png"/>
+    </div>
+
+    <h2 class="sectiontitle">3.1 — Editing Hand-Drawn and Web Images</h2>
+    <div class="card">
+        <div class="imgtitle">Web Image</div>
+        <img src="media/parta/edit_web_image.png"/>
+    </div>
+    <div class="card">
+        <div class="imgtitle">Drawing 1</div>
+        <img src="media/parta/edit_drawing_1.png"/>
+    </div>
+    <div class="card">
+        <div class="imgtitle">Drawing 2</div>
+        <img src="media/parta/edit_drawing_2.png"/>
+    </div>
+
+    <!-- ---------- 3.2 ---------- -->
+    <h2 class="sectiontitle">3.2 — Text-Guided Image Editing</h2>
+    <div class="card">
+        <div class="imgtitle">Campanile</div>
+        <img src="media/parta/text_edit_campanile.png"/>
+        <div class="caption">Prompt: "A large statue of a great warrior on a pedastal"</div>
+    </div>
+    <div class="card">
+        <div class="imgtitle">My Image 1</div>
+        <img src="media/parta/text_edit_my_image_1.png"/>
+        <div class="caption">Prompt: "A man running away from the police"</div>
+    </div>
+    <div class="card">
+        <div class="imgtitle">My Image 2</div>
+        <img src="media/parta/text_edit_my_image_2.png"/>
+        <div class="caption">Prompt: "A space war"</div>
+    </div>
+
+    <!-- ---------- 3.3 ---------- -->
+    <h2 class="sectiontitle">3.3 — Visual Anagrams</h2>
+    <div class="card">
+        <div class="imgtitle">Great Ape / Dolphin</div>
+        <img src="media/parta/anagram_views_0.png"/>
+        <div class="caption">Upright: "a sculpture of a great ape" · Rotated 180°: "a sculpture of a dolphin"</div>
+    </div>
+    <div class="card">
+        <div class="imgtitle">Wise Monk / Sith Lord</div>
+        <img src="media/parta/anagram_views_1.png"/>
+        <div class="caption">Upright: "an spirit projection of a wise monk" · Rotated 180°: "a spirit projection of a evil sith lord"</div>
+    </div>
+
+    <!-- ---------- 3.4 ---------- -->
+    <h2 class="sectiontitle">3.4 — Hybrid Images</h2>
+    <div class="card">
+        <div class="imgtitle">Child / Mountain</div>
+        <div class="row">
+            <div class="col"><img src="media/parta/hybrid_0.png"/><div class="caption">Close: "a lithograph of a mountain"</div></div>
+            <div class="col" style="justify-content:center;align-items:center"><img src="media/parta/hybrid_0.png" style="width:64px"/><div class="caption">Distant: "a lithograph of a child"</div></div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="imgtitle">Aurora / Ouroboros</div>
+        <div class="row">
+            <div class="col"><img src="media/parta/hybrid_1.png"/><div class="caption">Close: "a lithograph of a ouroboros"</div></div>
+            <div class="col" style="justify-content:center;align-items:center"><img src="media/parta/hybrid_1.png" style="width:64px"/><div class="caption">Distant: "a lithograph of a of the aurora lights"</div></div>
+        </div>
+    </div>
+
+    <!-- ===================================================== -->
+    <div class="partheader">Part B: Flow Matching from Scratch</div>
+    <!-- ===================================================== -->
+
+    <!-- ---------- 1.2 ---------- -->
+    <h2 class="sectiontitle">1.2 — Using the UNet to Train a Denoiser</h2>
+    <div class="card">
+        <div class="imgtitle">Noising Process</div>
+        <img src="media/partb/noise_levels.png"/>
+        <div class="caption">σ = 0.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0</div>
+    </div>
+
+    <!-- ---------- 1.2.1 ---------- -->
+    <h2 class="sectiontitle">1.2.1 — Training</h2>
+    <div class="card">
+        <div class="imgtitle">Training Loss</div>
+        <img src="media/partb/denoise_loss.png"/>
+    </div>
+    <div class="card">
+        <div class="imgtitle">Test Results</div>
+        <img src="media/partb/denoise_epoch1.png"/><div class="caption">Epoch 1 — clean / noisy / denoised</div>
+        <img src="media/partb/denoise_epoch5.png"/><div class="caption">Epoch 5 — clean / noisy / denoised</div>
+    </div>
+
+    <!-- ---------- 1.2.2 ---------- -->
+    <h2 class="sectiontitle">1.2.2 — Out-of-Distribution Testing</h2>
+    <div class="card">
+        <div class="imgtitle">Out-of-Distribution Noise Levels</div>
+        <img src="media/partb/ood.png"/>
+        <div class="caption">σ = 0.0, 0.2, 0.4, 0.5, 0.6, 0.8, 1.0 — top noisy, bottom denoised</div>
+    </div>
+
+    <!-- ---------- 1.2.3 ---------- -->
+    <div class="writeup">
+        <h2>1.2.3 — Denoising Pure Noise</h2>
+        <p>All of the denoised outputs look the same: each one is the average of all the digits in the training set. That average is the pattern that appears.</p>
+    </div>
+    <div class="card">
+        <div class="imgtitle">Training Loss</div>
+        <img src="media/partb/pure_noise_loss.png"/>
+    </div>
+    <div class="card">
+        <div class="imgtitle">Pure-Noise Results</div>
+        <img src="media/partb/pure_noise_epoch1.png"/><div class="caption">Epoch 1</div>
+        <img src="media/partb/pure_noise_epoch5.png"/><div class="caption">Epoch 5</div>
+    </div>
+
+    <h2 class="sectiontitle">2.2 — Training the Time-Conditioned UNet</h2>
+    <div class="card">
+        <div class="imgtitle">Training Loss</div>
+        <img src="media/partb/time_loss.png"/>
+    </div>
+
+    <h2 class="sectiontitle">2.3 — Sampling from the Time-Conditioned UNet</h2>
+    <div class="card">
+        <div class="imgtitle">Time-Conditioned Samples</div>
+        <img src="media/partb/time_epoch1.png"/><div class="caption">Epoch 1</div>
+        <img src="media/partb/time_epoch5.png"/><div class="caption">Epoch 5</div>
+        <img src="media/partb/time_epoch10.png"/><div class="caption">Epoch 10</div>
+    </div>
+
+    <h2 class="sectiontitle">2.5 — Training the Class-Conditioned UNet</h2>
+    <div class="card">
+        <div class="imgtitle">Training Loss</div>
+        <div class="row">
+            <div class="col"><img src="media/partb/class_loss.png"/><div class="caption">With scheduler</div></div>
+            <div class="col"><img src="media/partb/class_noscheduler_loss.png"/><div class="caption">No scheduler (lr = 1e-3)</div></div>
+        </div>
+    </div>
+
+    <h2 class="sectiontitle">2.6 — Sampling from the Class-Conditioned UNet</h2>
+    <div class="card">
+        <div class="imgtitle">Class-Conditioned Samples (with Scheduler)</div>
+        <img src="media/partb/class_epoch1.png"/><div class="caption">Epoch 1</div>
+        <img src="media/partb/class_epoch5.png"/><div class="caption">Epoch 5</div>
+        <img src="media/partb/class_epoch10.png"/><div class="caption">Epoch 10</div>
+    </div>
+
+    <div class="writeup">
+        <h2>Removing the Learning Rate Scheduler</h2>
+        <p>To compensate for removing the scheduler, I trained the same model with a constant learning rate of
+            1e-3, the rate the scheduler decays to by its final epoch. With a scheduler, a high learning rate at the
+            start lets the model move quickly toward a minimum, and lowering it later lets the model settle into a
+            local minimum. With a constant, lower learning rate, the model instead takes smaller, steadier steps
+            toward the local minimum in its current neighborhood. In doing this, we trade the ability to take large steps across the loss landscape for the ability
+            to find a local minimum much more quickly, since the model starts descending toward it from the very first
+            step instead of first jumping around the neighborhood.</p>
+        <p>The early epochs show this best: epoch 1 of the scheduled run is still noisy, while epoch 1 of the
+            no-scheduler run is already relatively clean. The scheduled run's loss also spikes at the very start,
+            which suggests that 1e-2 is too large for the first steps. As we approach epoch 10, however, both
+            versions look much closer in appearance, because both are approaching a local minimum.</p>
+        <p>Removing the scheduler helped in terms of time, as it lowered the number of epochs needed to achieve the
+            same result as the scheduled run.</p>
+    </div>
+    <div class="card">
+        <div class="imgtitle">Class-Conditioned Samples (No Scheduler)</div>
+        <img src="media/partb/class_noscheduler_epoch1.png"/><div class="caption">Epoch 1</div>
+        <img src="media/partb/class_noscheduler_epoch5.png"/><div class="caption">Epoch 5</div>
+        <img src="media/partb/class_noscheduler_epoch10.png"/><div class="caption">Epoch 10</div>
+    </div>
+
+</div>
+
+</body>
+</html>

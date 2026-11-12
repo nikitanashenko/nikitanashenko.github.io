@@ -1,0 +1,2 @@
+NN: 0.017s
+Bilinear: 0.043s
