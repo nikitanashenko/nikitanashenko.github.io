@@ -261,7 +261,75 @@ y′ = (dx + ey + f) / (gx + hy + 1)
         <p>I used a one-shot approach, using the middle image as the reference when there was an odd number of images, and arbitrarily picking the right image when there were two. For all warps, I used bilinear warping, as it gave the best-quality images, which would be important during alignment and weighted averaging. I then combined all the images in one canvas that would fit all of them, adding up their respective colors and dividing them by the weighted alpha mask, or how many pixels combined to make that pixel. This did a relatively good job of stitching, but some artifacts, such as blurring, parallax, and visible edges, are still visible.</p>
     </div>
 
-</div>
+
+    <!-- ======================================================= -->
+    <h1 style="margin-top:80px">Part B: Feature Matching for Autostitching</h1>
+
+    <!-- ===================== B.1 ===================== -->
+    <div class="partheader">B.1: Harris Corners and ANMS</div>
+
+        <div class="card">
+            <div class="imgtitle">Corner Detection (Red Car, Left)</div>
+            <div class="row" style="margin-bottom:18px">
+                <div class="col"><img src="media/harris_car_L.jpg" loading="lazy"><div class="caption">Harris corners</div></div>
+                <div class="col"><img src="media/anms_car_L.jpg" loading="lazy"><div class="caption">After ANMS (500)</div></div>
+            </div>
+        </div>
+
+    <!-- ===================== B.2 ===================== -->
+    <div class="partheader">B.2: Feature Descriptors</div>
+
+        <div class="card">
+            <div class="imgtitle">Extracted Descriptors</div>
+            <img src="media/descriptors_car_L.jpg" loading="lazy">
+            <div class="caption">40×40 windows (top) and their 8×8 normalized descriptors (bottom)</div>
+        </div>
+
+    <!-- ===================== B.3 ===================== -->
+    <div class="partheader">B.3: Feature Matching</div>
+
+        <div class="card">
+            <div class="imgtitle">Matched Features (Red Car)</div>
+            <img src="media/matches_car.jpg" loading="lazy">
+        </div>
+
+    <!-- ===================== B.4 ===================== -->
+    <div class="partheader">B.4: RANSAC and Automatic Mosaics</div>
+
+        <div class="card">
+            <div class="imgtitle">RANSAC Inliers</div>
+            <div class="row" style="margin-bottom:18px">
+                <div class="col"><img src="media/ransac_inliers_car.jpg" loading="lazy"><div class="caption">Red Car: L → R</div></div>
+            </div>
+            <div class="row" style="margin-bottom:18px">
+                <div class="col"><img src="media/tree_12_ransac_inliers.jpg" loading="lazy"><div class="caption">Trees: 1 → 2</div></div>
+                <div class="col"><img src="media/tree_32_ransac_inliers.jpg" loading="lazy"><div class="caption">Trees: 3 → 2</div></div>
+            </div>
+            <div class="row" style="margin-bottom:18px">
+                <div class="col"><img src="media/kitchen_13_ransac_inliers.jpg" loading="lazy"><div class="caption">Kitchen: 1 → 3</div></div>
+                <div class="col"><img src="media/kitchen_23_ransac_inliers.jpg" loading="lazy"><div class="caption">Kitchen: 2 → 3</div></div>
+            </div>
+            <div class="row" style="margin-bottom:18px">
+                <div class="col"><img src="media/kitchen_43_ransac_inliers.jpg" loading="lazy"><div class="caption">Kitchen: 4 → 3</div></div>
+                <div class="col"><img src="media/kitchen_53_ransac_inliers.jpg" loading="lazy"><div class="caption">Kitchen: 5 → 3</div></div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="imgtitle">Manual vs. Automatic</div>
+            <div class="row" style="margin-bottom:18px">
+                <div class="col"><img src="media/car_mosaic_hard.jpg" loading="lazy"><div class="caption">Red Car: Manual</div></div>
+                <div class="col"><img src="media/car_mosaic_ransac.jpg" loading="lazy"><div class="caption">Red Car: Automatic</div></div>
+            </div>
+            <div class="row" style="margin-bottom:18px">
+                <div class="col"><img src="media/tree_mosaic_hard.jpg" loading="lazy"><div class="caption">Trees: Manual</div></div>
+                <div class="col"><img src="media/tree_mosaic_ransac.jpg" loading="lazy"><div class="caption">Trees: Automatic</div></div>
+            </div>
+            <div class="row" style="margin-bottom:18px">
+                <div class="col"><img src="media/kitchen_mosaic_hard.jpg" loading="lazy"><div class="caption">Kitchen: Manual</div></div>
+                <div class="col"><img src="media/kitchen_mosaic_ransac.jpg" loading="lazy"><div class="caption">Kitchen: Automatic</div></div>
+            </div>
+        </div>
 
 </body>
 </html>
